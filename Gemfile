@@ -52,15 +52,15 @@ gem 'doorkeeper-jwt'
 
 group :development, :test do
   gem 'rspec-rails', '~> 5.0'
+  gem 'faker'
+  gem 'factory_bot_rails'
 
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mswin mswin64 mingw x64_mingw ]
 end
 
 group :test do
-  gem 'database_cleaner-active_record'
-  gem 'faker'
-  gem 'factory_bot_rails'
+  gem 'database_cleaner'
 end
 
 group :development do
@@ -73,4 +73,3 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
-

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   use_doorkeeper
   devise_for :users
-  resources :welcome
+  resources :home
 
   namespace :api do
     namespace :v1 do
@@ -16,5 +16,5 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
-  root "home#index"
+  root "welcome#index"
 end
