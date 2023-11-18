@@ -23,5 +23,7 @@ User.create(
 Doorkeeper::Application.create!(
   name:         'Your Application Name',
   redirect_uri: 'http://localhost:3000/',
+  uid:          '1111',
+  secret:       '2222',
   scopes:       'public read write'
 )
