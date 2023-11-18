@@ -222,8 +222,8 @@ Doorkeeper.configure do
   # For more information go to
   # https://doorkeeper.gitbook.io/guides/ruby-on-rails/scopes
   #
-  default_scopes  :public
-  optional_scopes :write
+  default_scopes  :read
+  optional_scopes :write, :public
 
   # default_scopes :me_credentails
   # optional_scopes :manage_employee, :create_blog
