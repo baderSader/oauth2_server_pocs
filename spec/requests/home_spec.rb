@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Homes", type: :controller do
+RSpec.describe "Home", type: :controller do
   describe "GET /index" do
     it "returns http success" do
       get "/home/index"
