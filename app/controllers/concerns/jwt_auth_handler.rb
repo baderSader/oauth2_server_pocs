@@ -12,9 +12,11 @@ module JwtAuthHandler
     token = extract_token_from_header
     payload = decode_token(token)
 
-    @current_company  = OpenStruct.new(payload['company'])
+    @current_resource = OpenStruct.new(payload['resource'])
+    @resource_props   = OpenStruct.new(payload['props'])
     @auth_application = payload['iss']
     @auth_scopes      = payload['scopes']
+    @token_info       = payload
   end
 
   def extract_token_from_header

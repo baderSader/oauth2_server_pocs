@@ -8,9 +8,23 @@ Doorkeeper.configure do
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
     current_user || warden.authenticate!(scope: :user)
-    current_user&.company
+    unless current_user && current_user.admin?
+      raise Doorkeeper::Errors::DoorkeeperError.new("You have to be a global admin")
+    end
+    current_user.company
   end
-  
+
+  resource_owner_from_credentials do |routes|
+    if routes.params[:grant_type] == 'password'
+      user = User.find_for_database_authentication(email: params[:username])
+      if user && user.valid_for_authentication? { user.valid_password?(params[:password]) }
+        user
+      else
+        raise Doorkeeper::Errors::DoorkeeperError.new("Invalid credentials")
+      end
+    end
+  end
+
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
   # file then you need to declare this block in order to restrict access to the web interface for
   # adding oauth authorized applications. In other case it will return 403 Forbidden response
@@ -65,7 +79,7 @@ Doorkeeper.configure do
   # update `resource_owner_type` column in the database and fix migration template as it will
   # set NOT NULL constraint for Access Grants table.
   #
-  # use_polymorphic_resource_owner
+  use_polymorphic_resource_owner
 
   # If you are planning to use Doorkeeper in Rails 5 API-only application, then you might
   # want to use API mode that will skip all the views management and change the way how
@@ -80,7 +94,7 @@ Doorkeeper.configure do
 
   # Authorization Code expiration time (default: 10 minutes).
   #
-  # authorization_code_expires_in 10.minutes
+  authorization_code_expires_in 1.year
 
   # Access token expiration time (default: 2 hours).
   # If you want to disable expiration, set this to `nil`.
@@ -342,7 +356,7 @@ Doorkeeper.configure do
   #   https://datatracker.ietf.org/doc/html/rfc6819#section-4.4.2
   #   https://datatracker.ietf.org/doc/html/rfc6819#section-4.4.3
   #
-  # grant_flows %w[authorization_code client_credentials]
+  grant_flows %w[authorization_code password]
 
   # Allows to customize OAuth grant flows that +each+ application support.
   # You can configure a custom block (or use a class respond to `#call`) that must

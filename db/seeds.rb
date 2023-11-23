@@ -27,3 +27,10 @@ Doorkeeper::Application.create!(
   secret:       '2222',
   scopes:       'public read write'
 )
+Doorkeeper::Application.create!(
+  name:         'Mobile App',
+  redirect_uri: 'http://localhost:3000/',
+  uid:          '2222',
+  secret:       '3333',
+  scopes:       'public read write'
+)
